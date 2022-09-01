@@ -21,7 +21,7 @@ namespace Locker.API.Controllers
         {
             var result = await lockersDbContext.Lockers.ToListAsync();
 
-            return Ok(result);
+            return Ok(result.OrderBy(x => x.LockerNo));
         }
 
         // Get Locker
@@ -43,6 +43,12 @@ namespace Locker.API.Controllers
         public async Task<IActionResult> AddLocker([FromBody] LockerInfo locker)
         {
             locker.Id = Guid.NewGuid();
+
+            // if the input of employee number is not null, then the value isEmpty is false
+            if (locker.EmployeeNumber != string.Empty)
+            {
+                locker.IsEmpty = false;
+            }
 
             await lockersDbContext.Lockers.AddAsync(locker);
             await lockersDbContext.SaveChangesAsync();

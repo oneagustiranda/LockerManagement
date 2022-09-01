@@ -1,0 +1,101 @@
+.container {
+    padding: 2em;
+    width: 100vw;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.lockers-container {
+    display: flex;
+    width: 100%;
+    padding-top: 5em;
+}
+
+.lockers-form {
+    width: 30%;
+    padding: 2em;
+}
+
+.lockers-grid {
+    width: 70%;
+    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+form .form-group {
+    margin-bottom: 1em;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+form input[type="text"], form input[type="password"], form input[type="number"] {
+    width: 100%;
+    padding: 0.5em 0.3em;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+}
+
+.form-group-inline {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.form-group-inline div {
+    width: 45%;
+}
+
+form button {
+    background-color: black;
+    padding: 0.5em 1em;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.locker-row {
+    width: 30%;
+    display: flex;
+    margin-bottom: 0.2em;
+}
+
+.locker-row-details {
+    background-color: #eee;
+    flex-grow: 1;
+    padding: 0.4em 1em;
+    display: grid;
+    margin-bottom: 0.5em;
+}
+
+.locker-row-details h3 {
+    margin-bottom: 0.5em;    
+    cursor: pointer
+}
+
+.locker-row-action {
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+
+.locker-row-action a {
+    display: block;
+    cursor: pointer;
+    padding: 0.5em;
+    border-radius: 30%;
+    background-color: #ef5350;
+    color: white;
+}

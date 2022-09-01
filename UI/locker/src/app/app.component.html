@@ -1,0 +1,43 @@
+<div class="container">
+  <h1>Locker Management</h1>
+
+  <div class="lockers-container">
+    <div class="lockers-form">
+      <form #form="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="">Locker No</label>
+          <input type="text" name="lockerNo" [(ngModel)]="locker.lockerNo">
+        </div>
+        <div class="form-group form-group-inline">
+          <div>
+            <label for="">Size</label>
+            <input type="text" name="lockerSize" [(ngModel)]="locker.size">
+          </div>
+          <div class="form-group">
+            <label for="">Location</label>
+            <input type="text" name="location" [(ngModel)]="locker.location">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="">Employee No</label>
+          <input type="text" name="empNo" [(ngModel)]="locker.employeeNumber">
+        </div>
+        <div class="form-group">
+          <button>Save</button>
+        </div>
+      </form>      
+    </div>
+    <div class="lockers-grid">
+      <div class="locker-row" *ngFor="let locker of lockers">
+        <div class="locker-row-details" [ngStyle]="{ 'background-color': locker.isEmpty ? '#92f08d' : '#8db0f0' }">
+          <h3 (click)="populateForm(locker)">No. {{ locker.lockerNo }}</h3>
+          <span>{{ locker.location }}</span>
+          <span>Emp ID: {{ locker.employeeNumber }}</span>
+          <div class="locker-row-action">
+            <a (click)="deleteLocker(locker.id)"><i class="fa-solid fa-trash-can"></i></a>
+          </div>
+        </div>        
+      </div>
+    </div>
+  </div>
+</div>

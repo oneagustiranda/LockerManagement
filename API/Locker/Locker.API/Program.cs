@@ -14,6 +14,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LockersDbContext>(x => 
 x.UseSqlServer(builder.Configuration.GetConnectionString("LockersDbConnectionString")));
 
+// add policy to access from ui
+builder.Services.AddCors((setup) =>
+{
+    setup.AddPolicy("default", (options) =>
+    {
+        options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("default");
 
 app.UseHttpsRedirection();
 
