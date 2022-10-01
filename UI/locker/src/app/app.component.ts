@@ -11,7 +11,6 @@ export class AppComponent implements OnInit {
   title = 'locker';
   lockers: Locker[] = [];
   locker: Locker = {
-    id: '',
     employeeNumber: '',
     lockerNo: '',
     size: 0,
@@ -37,31 +36,33 @@ export class AppComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.locker.id === '') {
-      this.lockersService.addLocker(this.locker)
+    this.lockersService.addLocker(this.locker)
       .subscribe(
         response => {
           this.getAllLockers();
           this.locker = {
-            id: '',
             employeeNumber: '',
             lockerNo: '',
             size: 0,
             location: '',
             isEmpty: true
           }
-        }
+        } 
       )
-    }
-    else {
-      this.updateLocker(this.locker);
-    }
+
+
+    // if(this.locker.lockerNo === this.locker.lockerNo) {
+      
+    // }
+    // else {
+    //   this.updateLocker(this.locker);
+    // }
 
     
   }
 
-  deleteLocker(id: string) {
-    this.lockersService.deleteLocker(id)
+  deleteLocker(lockerNo: string) {
+    this.lockersService.deleteLocker(lockerNo)
     .subscribe(
       response => {
         this.getAllLockers();

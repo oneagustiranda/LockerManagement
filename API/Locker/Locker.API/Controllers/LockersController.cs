@@ -26,11 +26,11 @@ namespace Locker.API.Controllers
 
         // Get Locker
         [HttpGet]
-        [Route("{id:guid}")]
+        [Route("{lockerNo}")]
         [ActionName("GetLocker")]
-        public async Task<IActionResult> GetLocker([FromRoute] Guid id)
+        public async Task<IActionResult> GetLocker([FromRoute] string lockerNo)
         {
-            var result = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.LockerNo == lockerNo);
 
             if (result != null)
                 return Ok(result);
@@ -42,26 +42,46 @@ namespace Locker.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLocker([FromBody] LockerInfo locker)
         {
-            locker.Id = Guid.NewGuid();
+            var empNumberExist = await lockersDbContext.Lockers
+                                .Where(x => x.EmployeeNumber == locker.EmployeeNumber && !x.EmployeeNumber.Equals(string.Empty))
+                                .Select(x => x.EmployeeNumber).ToListAsync();
 
-            // if the input of employee number is not null, then the value isEmpty is false
-            if (locker.EmployeeNumber != string.Empty)
+            var lockerNumberExist = await lockersDbContext.Lockers
+                                .Where(x => x.LockerNo == locker.LockerNo)
+                                .Select(x => x.EmployeeNumber).ToListAsync();
+
+            if (empNumberExist.Any())
             {
-                locker.IsEmpty = false;
+                var message = new Exception($"Employee number {locker.EmployeeNumber} already exists");
+
+                return BadRequest(message);
             }
+            else if (lockerNumberExist.Any())
+            {
+                var message = new Exception($"Locker number {locker.LockerNo} already exists");
 
-            await lockersDbContext.Lockers.AddAsync(locker);
-            await lockersDbContext.SaveChangesAsync();
+                return BadRequest(message);
+            }
+            else
+            {
+                // if the input of employee number is not null, then the value isEmpty is false
+                locker.IsEmpty = locker.EmployeeNumber != string.Empty ? false : true;
 
-            return CreatedAtAction(nameof(GetLocker), new { id = locker.Id }, locker);
+                await lockersDbContext.Lockers.AddAsync(locker);
+                await lockersDbContext.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetLocker), new { locker.IsEmpty }, locker);
+            }
+            
         }
 
+        // TODO: update logic UpdateLocker with noLocker no Id
         // Update a Locker
         [HttpPut]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> UpdateLocker([FromRoute] Guid id, [FromBody] LockerInfo locker)
+        [Route("{lockerNo}")]
+        public async Task<IActionResult> UpdateLocker([FromRoute] string lockerNo, [FromBody] LockerInfo locker)
         {
-            var existingLocker = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.Id == id);
+            var existingLocker = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.LockerNo == lockerNo);
 
             if (existingLocker != null)
             {
@@ -69,7 +89,7 @@ namespace Locker.API.Controllers
                 existingLocker.LockerNo = locker.LockerNo;
                 existingLocker.Size = locker.Size;
                 existingLocker.Location = locker.Location;
-                existingLocker.IsEmpty = locker.IsEmpty;
+                existingLocker.IsEmpty = locker.EmployeeNumber != string.Empty ? false : true;
 
                 await lockersDbContext.SaveChangesAsync();
 
@@ -81,10 +101,10 @@ namespace Locker.API.Controllers
 
         // Delete a Locker
         [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> DeleteLocker([FromRoute] Guid id)
+        [Route("{lockerNo}")]
+        public async Task<IActionResult> DeleteLocker([FromRoute] string lockerNo)
         {
-            var existingLocker = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.Id == id);
+            var existingLocker = await lockersDbContext.Lockers.FirstOrDefaultAsync(x => x.LockerNo == lockerNo);
 
             if (existingLocker != null)
             {

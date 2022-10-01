@@ -1,7 +1,6 @@
 export interface Locker {
-    id: string;
-    employeeNumber: string;
     lockerNo: string;
+    employeeNumber: string | null;    
     size: number;
     location: string;
     isEmpty: boolean;

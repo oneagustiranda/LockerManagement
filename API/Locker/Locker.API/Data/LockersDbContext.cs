@@ -11,6 +11,5 @@ namespace Locker.API.Data
 
         // DbSet
         public DbSet<LockerInfo> Lockers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
     }
 }

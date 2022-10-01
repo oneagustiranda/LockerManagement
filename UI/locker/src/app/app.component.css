@@ -66,6 +66,10 @@ form button {
     font-size: 1.2em;
 }
 
+form button:hover {
+    background-color: rgb(60, 57, 57);
+}
+
 .locker-row {
     width: 30%;
     display: flex;
@@ -85,6 +89,10 @@ form button {
     cursor: pointer
 }
 
+.locker-row-details h3:hover {
+    text-decoration-line: underline;
+}
+
 .locker-row-action {
     display: flex;
     justify-content: end;
@@ -98,4 +106,9 @@ form button {
     border-radius: 30%;
     background-color: #ef5350;
     color: white;
+}
+
+.locker-row-action a:hover {
+    background-color: #fbaba9;
+    color: rgb(63, 63, 63);
 }
